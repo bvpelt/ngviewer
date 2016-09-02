@@ -1,3 +1,4 @@
+/*
 goog.provide('backgroundlayer');
 
 goog.require('ngeo.BackgroundLayerMgr');
@@ -9,7 +10,7 @@ goog.require('ol.layer.Tile');
 goog.require('ol.source.ImageWMS');
 goog.require('ol.source.OSM');
 goog.require('ol.source.Stamen');
-
+*/
 
 /** @const **/
 var app = {};
@@ -38,7 +39,7 @@ app.backgroundlayerDirective = function() {
     scope: {
       'map': '=appBackgroundlayerMap'
     },
-    templateUrl: 'partials/backgroundlayer.html',
+    templateUrl: 'backgroundlayer.html',
     controllerAs: 'ctrl',
     bindToController: true,
     controller: 'AppBackgroundlayerController'
@@ -77,7 +78,7 @@ app.BackgroundlayerController = function($http, ngeoBackgroundLayerMgr) {
    */
   this.bgLayer = null;
 
-  $http.get('data/backgroundlayers.json').then(
+  $http.get('backgroundlayers.json').then(
       function(resp) {
         this.bgLayers = resp.data;
         // use the first layer by default
@@ -163,3 +164,5 @@ app.MainController = function($scope) {
 
 
 app.module.controller('MainController', app.MainController);
+
+

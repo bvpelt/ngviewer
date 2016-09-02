@@ -35,6 +35,12 @@ var watchPaths        = {
     html:          [       
         srcPath+'**/*.html',
         srcPath+'**/*.php'
+    ],
+    css:          [       
+        srcPath+'**/*.css'        
+    ],
+    json: [
+        srcPath+'*.json'
     ]
 };
 
@@ -44,6 +50,20 @@ gulp.task('sass', function () {
         .src(srcPath + 'assets/sass/*.scss')
         .pipe(include())
         .pipe(sass())
+        .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running sass task" }))
+        .pipe(autoprefixer({ browsers: ['> 1%', 'last 2 versions'], cascade: false }))
+        .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running sass task" }))
+        .pipe(cssmin({ keepBreaks: false }))
+        .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running sass task" }))
+        .pipe(rename({ suffix: '.min' }))
+        .pipe(gulp.dest(distPath + 'assets/css'));
+});
+
+// Task for sass files
+gulp.task('css', function () {
+    gulp
+        .src(srcPath + 'assets/css/*.css')
+        .pipe(include())        
         .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running sass task" }))
         .pipe(autoprefixer({ browsers: ['> 1%', 'last 2 versions'], cascade: false }))
         .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running sass task" }))
@@ -82,6 +102,15 @@ gulp.task('html', function () {
         .pipe(gulp.dest(distPath));
 });
 
+// json task
+gulp.task('json', function () {
+    gulp
+        .src([srcPath + '*.json'])
+        .pipe(include())
+        .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running html task" }))
+        .pipe(gulp.dest(distPath));
+});
+
 // Images task
 gulp.task('images', function () {
     gulp
@@ -96,7 +125,9 @@ gulp.task('watch', function() {
     gulp.watch(watchPaths.scripts, ['scripts']);
     gulp.watch(watchPaths.images, ['images']);
     gulp.watch(watchPaths.sass, ['sass']);
+    gulp.watch(watchPaths.sass, ['css']);
     gulp.watch(watchPaths.html, ['html']);
+    gulp.watch(watchPaths.html, ['json']);
     gulp.watch(watchPaths.fonts, ['fonts']);
 
     livereload.listen();
@@ -104,4 +135,4 @@ gulp.task('watch', function() {
 });
 
 // Default task
-gulp.task('default', ['scripts', 'images', 'sass', 'fonts', 'html', 'watch']);
+gulp.task('default', ['scripts', 'images', 'sass', 'css', 'fonts', 'html', 'json', 'watch']);
