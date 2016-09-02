@@ -1,0 +1,38 @@
+{
+  "name": "ngviewer",
+  "version": "1.0.0",
+  "description": "NGEO Viewer test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bvpelt/ngviewer.git"
+  },
+  "keywords": [
+    "NGEO",
+    "viewer"
+  ],
+  "author": "Bart van Pelt (bart.vanpelt@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bvpelt/ngviewer/issues"
+  },
+  "homepage": "https://github.com/bvpelt/ngviewer#readme",
+  "dependencies": {
+    "event-stream": "^3.3.4",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-imagemin": "^3.0.3",
+    "gulp-include": "^2.3.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-uglify": "^2.0.0",
+    "path": "^0.12.7"
+  }
+}

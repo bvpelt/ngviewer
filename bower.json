@@ -1,0 +1,27 @@
+{
+  "name": "ngviewer",
+  "description": "NGEO Viewer test",
+  "main": "index.html",
+  "authors": [
+    "Bart van Pelt (bart.vanpelt@gmail.com)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "NGEO",
+    "viewer"
+  ],
+  "homepage": "https://github.com/bvpelt/ngviewer",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ngeo": "^0.0.2",
+    "angular": "angularjs#^1.5.8",
+    "openlayers3": "^3.0.0"
+  }
+}
