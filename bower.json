@@ -1,16 +1,18 @@
 {
   "name": "ngviewer",
-  "description": "NGEO Viewer test",
-  "main": "index.html",
+  "homepage": "https://github.com/bvpelt/ngviewer",
   "authors": [
-    "Bart van Pelt (bart.vanpelt@gmail.com)"
+    "Bart van Pelt <bart.vanpelt@gmail.com>"
+  ],
+  "description": "My first ngeo project",
+  "main": "index.html",
+  "keywords": [
+    "ngeo",
+    "openlayers",
+    "3.0",
+    "angularjs"
   ],
   "license": "MIT",
-  "keywords": [
-    "NGEO",
-    "viewer"
-  ],
-  "homepage": "https://github.com/bvpelt/ngviewer",
   "private": true,
   "ignore": [
     "**/.*",
@@ -20,9 +22,7 @@
     "tests"
   ],
   "dependencies": {
-    "ngeo": "^0.0.2",
     "angular": "angularjs#^1.5.8",
-    "openlayers3": "^3.0.0",
-    "bootstrap": "^3.3.7"
+    "google-closure-library": "*"
   }
 }

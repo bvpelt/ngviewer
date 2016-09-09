@@ -1,9 +1,12 @@
 var gulp               = require('gulp');             
 var fs                 = require('fs');
+var pump                 = require('pump');
 var es                 = require('event-stream');
 var path               = require('path');
 var uglify             = require('gulp-uglify'); 
 var sass               = require('gulp-sass');
+
+var less               = require('gulp-less');
 var cssmin             = require('gulp-minify-css');
 var rename             = require('gulp-rename'); 
 var autoprefixer       = require('gulp-autoprefixer');
@@ -25,22 +28,22 @@ var watchPaths        = {
     images:     [
         srcPath+'assets/img/**'
     ],
-    sass:         [
+    css:         [
+        srcPath+'assets/css/*.css'
+    ],
+    less:         [
+         srcPath+'assets/less/*.less',
+         srcPath+'assets/less/**/*.less'
+     ],
+     sass:         [
         srcPath+'assets/sass/*.scss',
         srcPath+'assets/sass/**/*.scss'
     ],
     fonts:      [
         srcPath+'assets/fonts/**'
     ],
-    html:          [       
-        srcPath+'**/*.html',
-        srcPath+'**/*.php'
-    ],
-    css:          [       
-        srcPath+'**/*.css'        
-    ],
-    json: [
-        srcPath+'*.json'
+    html:          [
+        srcPath+'**/*.html'
     ]
 };
 
@@ -59,20 +62,33 @@ gulp.task('sass', function () {
         .pipe(gulp.dest(distPath + 'assets/css'));
 });
 
-// Task for sass files
-gulp.task('css', function () {
-    gulp
-        .src(srcPath + 'assets/css/*.css')
-        .pipe(include())        
-        .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running sass task" }))
-        .pipe(autoprefixer({ browsers: ['> 1%', 'last 2 versions'], cascade: false }))
-        .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running sass task" }))
-        .pipe(cssmin({ keepBreaks: false }))
-        .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running sass task" }))
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest(distPath + 'assets/css'));
+// Task for less
+gulp.task('less', function () {
+  gulp
+    .src(srcPath + 'assets/less/bootstrap.less')
+    .pipe(include())
+    .pipe(less({
+      paths: [ path.join(__dirname, 'less', 'includes') ]
+    }))
+    .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running less task" }))
+    .pipe(cssmin({ keepBreaks: false }))
+    .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running less task" }))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest(distPath + 'assets/css'));
 });
 
+// Task for css
+gulp.task('css', function () {
+  gulp
+    .src(srcPath + 'assets/css/*.css')
+    .pipe(include())
+    .pipe(cssmin({ keepBreaks: false }))
+    .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running less task" }))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest(distPath + 'assets/css'));
+});
+
+/*
 // Javscript task
 gulp.task('scripts', function(){
     gulp
@@ -84,6 +100,15 @@ gulp.task('scripts', function(){
         .pipe(rename({ suffix: '.min' }))
         .pipe(sourcemaps.write('maps'))
         .pipe(gulp.dest(distPath + 'assets/js'));
+});
+*/
+
+// Javscript task
+gulp.task('scripts', function(cb){
+    pump( [
+        gulp.src(srcPath + 'assets/js/*.js'),        
+        gulp.dest(distPath + 'assets/js')
+        ], cb);
 });
 
 // Font task
@@ -97,15 +122,6 @@ gulp.task('fonts', function () {
 gulp.task('html', function () {
     gulp
         .src([srcPath + '*.html'])
-        .pipe(include())
-        .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running html task" }))
-        .pipe(gulp.dest(distPath));
-});
-
-// json task
-gulp.task('json', function () {
-    gulp
-        .src([srcPath + '*.json'])
         .pipe(include())
         .on("error", notify.onError({ message: "Error: <%= error.message %>", title: "Error running html task" }))
         .pipe(gulp.dest(distPath));
@@ -125,9 +141,9 @@ gulp.task('watch', function() {
     gulp.watch(watchPaths.scripts, ['scripts']);
     gulp.watch(watchPaths.images, ['images']);
     gulp.watch(watchPaths.sass, ['sass']);
-    gulp.watch(watchPaths.sass, ['css']);
+    gulp.watch(watchPaths.less, ['less']);
+    gulp.watch(watchPaths.less, ['css']);
     gulp.watch(watchPaths.html, ['html']);
-    gulp.watch(watchPaths.html, ['json']);
     gulp.watch(watchPaths.fonts, ['fonts']);
 
     livereload.listen();
@@ -135,4 +151,4 @@ gulp.task('watch', function() {
 });
 
 // Default task
-gulp.task('default', ['scripts', 'images', 'sass', 'css', 'fonts', 'html', 'json', 'watch']);
+gulp.task('default', ['scripts', 'images', 'sass', 'less', 'css', 'fonts', 'html', 'watch']);
