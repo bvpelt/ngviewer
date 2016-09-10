@@ -23,6 +23,7 @@
   ],
   "dependencies": {
     "angular": "angularjs#^1.5.8",
-    "google-closure-library": "*"
+    "google-closure-library": "*",
+    "proj4": "^2.3.15"
   }
 }
